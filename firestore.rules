@@ -1,9 +1,26 @@
 rules_version = '2';
-
 service cloud.firestore {
   match /databases/{database}/documents {
+    // Default deny
     match /{document=**} {
       allow read, write: if false;
+    }
+    
+    // Allow reading from all these collections
+    match /shared-csv-files/{document} {
+      allow read: if true;
+    }
+    
+    match /shared-files/{document} {
+      allow read: if true;
+    }
+    
+    match /csv-files/{document} {
+      allow read: if true;
+    }
+    
+    match /user-files/{document} {
+      allow read: if request.auth != null;
     }
   }
 }
